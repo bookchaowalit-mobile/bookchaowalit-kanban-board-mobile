@@ -2,12 +2,16 @@
 import PackageDescription
 
 let package = Package(
-    name: "Kanban Board",
+    name: "KanbanBoard",
     platforms: [.iOS(.v17), .macOS(.v14)],
     products: [
-        .library(name: "Kanban Board", targets: ["Kanban Board"])
+        .library(name: "KanbanBoardCore", targets: ["KanbanBoardCore"]),
+        .library(name: "KanbanBoardUI", targets: ["KanbanBoardUI"]),
     ],
     targets: [
-        .target(name: "Kanban Board", path: "Sources")
+        // Foundation-only domain logic; no SwiftUI so it also builds on Linux.
+        .target(name: "KanbanBoardCore", path: "Sources/KanbanBoardCore"),
+        .target(name: "KanbanBoardUI", dependencies: ["KanbanBoardCore"], path: "Sources/KanbanBoardUI"),
+        .testTarget(name: "KanbanBoardCoreTests", dependencies: ["KanbanBoardCore"], path: "Tests/KanbanBoardCoreTests"),
     ]
 )
